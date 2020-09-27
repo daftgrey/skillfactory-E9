@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block dashboard %}
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .main_content {
+            width: 47%;
+            border-radius: 8px;
+            height: 77%;
+        }
+    </style>
+    {% if current_user.is_authenticated %}
+        <div class="main_content show">
+            <div class="content_header">
+                <div class="header_left">
+                    <span class="sign"><i class="far fa-clock"></i></span>
+                    <p class="name_"><a href="{{ url_for('dashboard') }}" class="main_logo">Simple Scheduler</a></p>
+                </div>
+                <div class="header_right">
+                    <ul>
+                        <li>
+                            {% if current_user.is_authenticated %}
+                                <div class="dropdown">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                       id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="user_image"><i
+                                                class="far fa-user-circle"></i></span><span
+                                            class="username">{{ current_user.email }}</span>
+                                    </a>
+
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#">Account settings</a>
+                                        <a class="dropdown-item" href="#">Help</a>
+                                        <a class="dropdown-item" href="{{ url_for('logout') }}">Log out</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        <li>
+                            <div class="dropdown">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                   id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                   style="background-color: #DD3809; color: white;">
+                                    <span>+</span> More
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="{{ url_for('create_event') }}">Create event</a>
+                                    <a class="dropdown-item" href="#">List of events</a>
+                                    <a class="dropdown-item" href="#">Calendar</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content_body">
+                <div class="content_body_left">
+                    <h1 class="content_body_left_title">Menu</h1>
+                    <div class="content_body_left_list">
+                        <ul>
+                            <li><a href="#">Events</a></li>
+                            <li><a href="#">Share Events</a></li>
+                            <li><a href="#">Request Events</a></li>
+                            <li><a href="#">Plan Events</a></li>
+                        </ul>
+                    </div>
+                    <h1 class="content_body_left_title_second calendar_title">Calendar</h1>
+                    <div class="create_calendar">
+                        <div class="create_calendar_title">
+                            <span>It's easy</span>
+                        </div>
+                        <button type="button" class="btn btn-secondary"
+                                onclick="window.location.href='#'">Create calendar <span>+</span></button>
+                    </div>
+                </div>
+                <div class="content_body_right">
+                    {% if not isEvent %}
+                        <h3 class="content_body_right_title">Start by creating your first event</h3>
+                        <div class="content_cards">
+                            <a href="{{ url_for('create_event') }}" class="content_cards_link">
+                                <div class="content_body_right_cards">
+                                    <div class="card_logo"><i class="far fa-handshake"></i></div>
+                                    <div class="card_title">Create event</div>
+                                    <div class="card_p">Create your events fast!</div>
+                                    <div class="card_button">
+                                        <button type="button" class="btn btn-danger"
+                                                style="background-color: #dd3809; color: white; font-weight: bold;">
+                                            Create Event
+                                        </button>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="{{ url_for('events_list') }}" class="content_cards_link">
+                                <div class="content_body_right_cards">
+                                    <div class="card_logo"><i class="fas fa-list"></i></div>
+                                    <div class="card_title">List of events</div>
+                                    <div class="card_p">Show list of events</div>
+                                    <div class="card_button">
+                                        <button type="button" class="btn btn-danger"
+                                                style="background-color: #dd3809; color: white; font-weight: bold;">
+                                            Show List
+                                        </button>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="#" class="content_cards_link">
+                                <div class="content_body_right_cards">
+                                    <div class="card_logo"><i class="far fa-calendar-alt"></i></div>
+                                    <div class="card_title">Calendar</div>
+                                    <div class="card_p">Show what to expect</div>
+                                    <div class="card_button">
+                                        <button type="button" class="btn btn-danger"
+                                                style="background-color: #dd3809; color: white; font-weight: bold;">
+                                            Show Calendar
+                                        </button>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+                    {% if events %}
+                        {% for event in events %}
+                            <div class="content_events_list">
+                                <div class="card_content">
+                                    <i class="far fa-user-circle" style="font-size: 2rem"></i>
+                                    <div class="card_content_left">
+                                        <p class="card_event_subject" title="{{ event.subject }}">{{ event.subject}}</p>
+                                        <p class="card_event_description" title="{{ event.description }}">
+                                            Description</p>
+                                    </div>
+                                    <div class="card_content_center">
+                                        <p class="card_event_start_date">From: <span>2020-08-03</span></p>
+                                        <p class="card_event_end_date">To: <span>2020-08-03</span></p>
+                                    </div>
+                                    <div class="card_content_right">
+                                        <p title="Author: {{ event.author_email}}" class="author_email">{{ event.author_email}}</p>
+                                        {% if event.author_email == current_user.email %}
+                                            <a href="{{ url_for('event_edit', _method='GET', event_id=event._id|int) }}">Edit</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <nav aria-label="pagination" class="nav_pagination">
+                            <ul class="pagination">
+                                {% if prev_url %}
+                                    <li class="page-item"><a class="page-link" href="{{ prev_url }}">Previous</a></li>
+                                {% endif %}
+                                {% if next_url %}
+                                    <li class="page-item"><a class="page-link" href="{{ next_url }}">Next</a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% else %}
+                        <div class="content_events_list_none">
+                            <div class="card_content">
+                                <p>Events invitations you send and receive will show up here</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
