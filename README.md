@@ -1,27 +1,19 @@
-# Flask Scheduler
+Сервис планирования событий, написанный на Flask Framework
 
-Simple Flask Scheduler project
+### Чтобы запустить проект:
 
-## Getting Started
-
-This project was created as a Homework for SkillFactory. Module E9. PWS-6. 
-
-### Start using this project
-
-What you need to do for correctly start using it?
-
-* Clone or download my project
-```commandline
-git clone git@github.com:dannycrief/flask_scheduler.git
+1. Скопировать код:
+```
+git clone https://github.com/daftgrey/skillfactory-E9.git
 ```
 
-* Go to project folder
+2. Перейти в папку с проектом:
 ```
-cd flask_scheduler
+cd skillfactory-E9
 ```
-### Environments settings
-* Create .env file and put code below in it
-```.env
+### Переменные окружения
+3. Создать файл .env со следующими переменными:
+```
 FLASK_ENV=development
 FLASK_DEBUG=True
 SECRET_KEY='your-secret-key'
@@ -30,41 +22,28 @@ DATABASE_URL='postgresql://user:password@localhost:5432/db-name'
 PYTHONPATH=.
 POSTS_PER_PAGE=3
 ```
-### Alembic settings
-* Create alembic migrations. Initialize alembic
-```commandline
+### Alembic
+* Создать миграцию с помощью Alembic
+```
 PYTHONPATH=. alembic init alembic
 ```
-* Commit Changes
-```commandline
+* Закоммитить изменения
+```
 PYTHONPATH=. alembic revision --autogenerate -m "initial migration" 
 ```
-* Confirm migrations
-```commandline
+* Применинть миграцию
+```
 PYTHONPATH=. alembic upgrade head
 ```
-* Modify alembic config in alembic.ini
-```ini
+* Изменить файл alembic.ini
+```
 sqlalchemy.url = postgresql://user:password@localhost:5432/db-name
 ```
 
-### Docker settings
+### Docker
 
-* Build Docker
-```commandline
-docker-compose build
-```
+1. docker-compose build
 
-* Fist of all up postgres container
-```commandline
-docker-compose up postgres
-```
+2. docker-compose up postgres
 
-* And up all containers
-```commandline
-docker-compose up
-```
-
-## Author
-
-* **[Stepan Kozurak](https://www.linkedin.com/in/stepan-kozurak-77485b16b/)**
+3. docker-compose up
